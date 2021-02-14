@@ -25,12 +25,16 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
         self.padding = len( str( self.span ) )
         self.style = '''
             <style>
-                .absolute_line_no {
-                    color: #ccc;
+                .curr_line {
+                    color: #90a959;
                 }
 
-                .relative_line_no {
-                    color: #666;
+                .above_line {
+                    color: #a63d40;
+                }
+
+                .below_line {
+                    color: #6494aa;
                 }
             </style>
         '''
@@ -94,17 +98,32 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
             reg = sublime.Region( reg, reg )
 
             # content
+            classes = []
             if ( self.mode == 'hybrid' ) and ( rel_line == 0 ):
                 # show current line number
-                show_line = cur_line + 1
-                line_class = 'absolute_line_no'
+                show_line = '{:*>{}}'.format( cur_line + 1, self.padding )
+                
+                classes.append( 'curr_line' ) 
+                classes.append( 'absolute_line_no' )
 
             else:
-                show_line = abs( rel_line )
-                line_class = 'relative_line_no'
+                show_line = '{:.>{}}'.format( abs( rel_line ), self.padding )
 
-            show_line = '<pre class="{}">{:_>{}}</pre>'.format(
-                line_class, show_line, self.padding
+                if rel_line == 0:
+                    classes.append( 'curr_line' )
+
+                elif rel_line < 0:
+                    classes.append( 'above_line' )
+
+                else:
+                    classes.append( 'below_line' )
+
+                classes.append( 'relative_line_no' )
+
+
+            classes.append( 'vintage_relnums' )
+            show_line = '<span class="{}">{}</span>'.format(
+                ' '.join( classes ), show_line
             )
 
             content = '<body>{}<div>{}</div></body>'.format( self.style, show_line )
