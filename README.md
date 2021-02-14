@@ -1,6 +1,8 @@
 # Vintage Relative Numbering
 Relative numbering for Sublime's Vintage mode.
 
+![Example](example.png)
+
 ## Install Instructions
 
 1. Navigate to Sublime's Package directory. This can be found by opening up Sublime's console (``Ctrl + ` ``, or `View > Show Console` ), and running `sublime.packages_path()`.
