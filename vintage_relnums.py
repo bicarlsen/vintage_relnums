@@ -9,7 +9,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
         super().__init__( view )
 
         self.phantom_id = 'vintage_relnums'
-        self.span = 100  # how many lines to calculate for relative numbering on each side
+        self.command_mode = 'command_mode'  # vintage command mode
 
         # setup phantoms
         self.phantom_set = sublime.PhantomSet( self.view, self.phantom_id )
@@ -20,9 +20,13 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
         self.debounce_delay = 0.4
 
         # settings
-        self.command_mode = 'command_mode'  # vintage command mode
+        self.span = 100  # how many lines to calculate for relative numbering on each side
+        self.min_padding = len( str( self.span ) )
         self.mode = 'hybrid'
-        self.padding = len( str( self.span ) )
+        self.curr_line_marker = '*'
+        self.rel_line_marker = '.'
+
+        # styles
         self.style = '''
             <style>
                 .curr_line {
@@ -78,6 +82,13 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
         active_cursor_pos = self.view.sel()[ -1 ].b
         cur_line = self.view.rowcol( active_cursor_pos )[ 0 ]
 
+        # calculate padding
+        if self.mode == 'hybrid':
+            padding = max( len( str( cur_line ) ), self.min_padding )
+
+        else:
+            padding = self.min_padding
+
         rel_start = (
             -cur_line
             if self.span > cur_line else
@@ -101,13 +112,21 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
             classes = []
             if ( self.mode == 'hybrid' ) and ( rel_line == 0 ):
                 # show current line number
-                show_line = '{:*>{}}'.format( cur_line + 1, self.padding )
-                
-                classes.append( 'curr_line' ) 
+                show_line = '{:{}>{}}'.format(
+                    cur_line + 1,
+                    self.curr_line_marker,
+                    padding
+                )
+
+                classes.append( 'curr_line' )
                 classes.append( 'absolute_line_no' )
 
             else:
-                show_line = '{:.>{}}'.format( abs( rel_line ), self.padding )
+                show_line = '{:{}>{}}'.format(
+                    abs( rel_line ),
+                    self.rel_line_marker,
+                    padding
+                )
 
                 if rel_line == 0:
                     classes.append( 'curr_line' )

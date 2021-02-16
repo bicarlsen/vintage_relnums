@@ -7,7 +7,7 @@ Relative numbering for Sublime's Vintage mode.
 
 1. Navigate to Sublime's Packages directory. 
 
-This can be found by opening up Sublime's console (``Ctrl + ` ``, or `View > Show Console` ), and run `sublime.packages_path()`.
+This can be found by opening up Sublime's console (``Ctrl + ` (backtick)``, or `View > Show Console` ), and run `sublime.packages_path()`.
 
 2. Place the `vintage_relnums` folder inside the Packages directory. 
 
