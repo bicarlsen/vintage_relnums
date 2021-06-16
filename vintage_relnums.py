@@ -1,4 +1,4 @@
-from threading import Timer
+import threading
 
 import sublime
 import sublime_plugin
@@ -6,6 +6,9 @@ import sublime_plugin
 
 class VintageRelNums( sublime_plugin.ViewEventListener ):
     def __init__( self, view ):
+        """
+        :param view: sublime.View to operate on.
+        """
         super().__init__( view )
 
         self.phantom_id = 'vintage_relnums'
@@ -16,7 +19,8 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
         self.remove_phantoms()
 
         # debounce
-        self.debounce = None
+        self.curr_line = None  # currently active line
+        self.debounce = None  # debounce timer, threading.Timer
 
         # settings
         default_settings = {
@@ -55,75 +59,106 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
                 }}
             </style>
         '''.format(
-            self.settings[ 'curr_line_color' ],
-            self.settings[ 'above_line_color' ],
-            self.settings[ 'below_line_color' ]
-        )
+                self.settings[ 'curr_line_color' ],
+                self.settings[ 'above_line_color' ],
+                self.settings[ 'below_line_color' ]
+            )
 
         self.view.settings().add_on_change( self.command_mode, self.update_phantoms )
 
 
     def on_activated( self ):
+        """
+        Inserts phantoms when first entering vintage mode.
+        """
         self.update_phantoms()
 
 
     def on_selection_modified_async( self ):
+        """
+        Modifies line numbers when cursor is moved.
+        """
         if not self.in_command_mode():
             self.remove_phantoms()
+            return
+
+
+        if self.get_current_line() == self.curr_line:
+            # cursor's line number did not change
             return
 
         if self.debounce is not None:
             # cancel currently running
             self.debounce.cancel()
 
-        self.debounce = Timer( self.settings[ 'debounce_delay' ], self.update_phantoms )
+        self.debounce = threading.Timer(
+            self.settings[ 'debounce_delay' ],
+            self.update_phantoms
+        )
+        
         self.debounce.start()
-        self.debounce.join()
-        self.debounce = None
+
 
     def in_command_mode( self ):
+        """
+        :returns: If editor is currently in vintage mode.
+        """
         return self.view.settings().get( self.command_mode )
 
 
     def remove_phantoms( self ):
+        """
+        Remove all phantoms.
+        """
         self.view.erase_phantoms( self.phantom_id )  # remove previous phantom sets
         self.phantom_set.update( [] )
 
 
     def update_phantoms( self ):
+        """
+        Updates phantoms to match current cursor position.
+        """
+        if (
+            ( self.debounce is not None ) and
+            ( threading.current_thread() != self.debounce )
+        ):
+            # invalid thread, missed cancellation
+            # required because on quick scrolling
+            # some of the debounce timers do not get cancelled.
+            return
+
         if not self.in_command_mode():
             # not in command mode
             self.remove_phantoms()
             return
 
-        active_cursor_pos = self.view.sel()[ -1 ].b
-        cur_line = self.view.rowcol( active_cursor_pos )[ 0 ]
+        self.curr_line = self.get_current_line()
 
         # calculate padding
         if self.mode == 'hybrid':
-            padding = max( len( str( cur_line ) ), self.min_padding )
+            padding = max( len( str( self.curr_line ) ), self.min_padding )
 
         else:
             padding = self.min_padding
 
         span = self.settings[ 'span' ]
         rel_start = (
-            -cur_line
-            if span > cur_line else
+            -self.curr_line
+            if span > self.curr_line else
             -span
         )
 
         max_line = self.view.rowcol( self.view.size() )[ 0 ]
         rel_end = (
-            max_line - cur_line + 1
-            if cur_line + span > max_line else
+            max_line - self.curr_line + 1
+            if self.curr_line + span > max_line else
             span + 1
         )
 
         phantoms = []
         for rel_line in range( rel_start, rel_end ):
             # region
-            reg = self.view.text_point( cur_line + rel_line, 0 )
+            reg = self.view.text_point( self.curr_line + rel_line, 0 )
             reg = sublime.Region( reg, reg )
 
             # content
@@ -131,7 +166,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
             if ( self.mode == 'hybrid' ) and ( rel_line == 0 ):
                 # show current line number
                 show_line = '{:{}>{}}'.format(
-                    cur_line + 1,
+                    self.curr_line + 1,
                     self.settings[ 'curr_line_marker' ],
                     padding
                 )
@@ -168,3 +203,11 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
             phantoms.append( phantom )
 
         self.phantom_set.update( phantoms )
+        self.debounce = None
+
+
+    def get_current_line( self ):
+        active_cursor_pos = self.view.sel()[ -1 ].b
+        curr_line = self.view.rowcol( active_cursor_pos )[ 0 ]
+
+        return curr_line
