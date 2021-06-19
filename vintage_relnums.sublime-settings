@@ -1,4 +1,8 @@
 {
+    // Use native relatve line number instead of phantoms.
+    // For ST4 (build >4000) and up only.
+    "native": true,
+
     // Default mode to enter.
     // Values are [ 'hybrid', 'relative' ]
     "mode": "hybrid",

@@ -24,8 +24,11 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
 
         # settings
         self.settings = sublime.load_settings( 'vintage_relnums.sublime-settings' )
+        # TODO [0]: Redraw phantoms on settings change
+        # self.settings.add_on_change( self.update_lines )
+
         self.mode = self.settings.get( 'mode' )
-        self.min_padding = len( str( self.settings.get( 'span' ) ) )
+        self.relative_line_numbers = self.settings.get( 'relative_line_numbers', False )
 
         # styles
         # use double curly braces ( {{ }} )for use in formatted string
@@ -56,14 +59,14 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
                 self.settings.get( 'below_line_color' )
             )
 
-        self.view.settings().add_on_change( self.command_mode, self.update_phantoms )
+        self.view.settings().add_on_change( self.command_mode, self.update_lines )
 
 
     def on_activated( self ):
         """
         Inserts phantoms when first entering vintage mode.
         """
-        self.update_phantoms()
+        self.update_lines()
 
 
     def on_selection_modified_async( self ):
@@ -85,7 +88,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
 
         self.debounce = threading.Timer(
             self.settings.get( 'debounce_delay' ),
-            self.update_phantoms
+            self.update_lines
         )
         
         self.debounce.start()
@@ -106,6 +109,28 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
         self.phantom_set.update( [] )
 
 
+    def update_lines( self ):
+        native = (
+            self.settings.get( 'native' ) and
+            ( int( sublime.version() ) >= 4000 )
+        )
+        
+        if self.in_command_mode():
+            if native:
+                self.view.settings().set( "relative_line_numbers", True )
+
+            else:
+                self.update_phantoms()
+
+        else:
+            # not in command mode
+            if native:
+                self.view.settings().set( "relative_line_numbers", self.relative_line_numbers )
+
+            else:
+                self.remove_phantoms()
+
+
     def update_phantoms( self ):
         """
         Updates phantoms to match current cursor position.
@@ -119,21 +144,17 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
             # some of the debounce timers do not get cancelled.
             return
 
-        if not self.in_command_mode():
-            # not in command mode
-            self.remove_phantoms()
-            return
-
         self.curr_line = self.get_current_line()
 
         # calculate padding
+        min_padding = len( str( self.settings.get( 'span' ) ) )
         if self.mode == 'hybrid':
             line_no = self.curr_line + 1  # curr_line is zero indexed
             line_len = len( str( line_no ) )
-            padding = max( line_len, self.min_padding )
+            padding = max( line_len, min_padding )
 
         else:
-            padding = self.min_padding
+            padding = min_padding
 
         span = self.settings.get( 'span' )
         rel_start = (
