@@ -1,0 +1,30 @@
+{
+    // Default mode to enter.
+    // Values are [ 'hybrid', 'relative' ]
+    "mode": "hybrid",
+    
+    // How many lines to calculate for relative numbering on each side
+    // of the current line.
+    "span": 100,  
+
+    // Font family to use for the numbering.
+    "font_face": "monospace",
+
+    // Padding between the numbering and text.
+    "padding": "2px",
+
+    // Text colors of the current line,
+    // lines above, and lines below.
+    "curr_line_color":  "#90a959",
+    "above_line_color": "#a63d40",
+    "below_line_color": "#6494aa",
+
+    // Markers for the current line,
+    // and relative lines.
+    "curr_line_marker": "*",
+    "rel_line_marker":  ".",
+
+    // Amount of time to wait before updating
+    // new numberings.
+    "debounce_delay": 0.4
+}

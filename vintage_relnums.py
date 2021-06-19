@@ -23,29 +23,19 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
         self.debounce = None  # debounce timer, threading.Timer
 
         # settings
-        default_settings = {
-            'mode': 'hybrid',
-            'span': 100,  # how many lines to calculate for relative numbering on each side
-
-            'curr_line_color':  '#90a959',
-            'above_line_color': '#a63d40',
-            'below_line_color': '#6494aa',
-
-            'curr_line_marker': '*',
-            'rel_line_marker':  '.',
-
-            'debounce_delay': 0.4
-        }
-
-        self.settings = default_settings
-
-        self.mode = self.settings[ 'mode' ]
-        self.min_padding = len( str( self.settings[ 'span' ] ) )
+        self.settings = sublime.load_settings( 'vintage_relnums.sublime-settings' )
+        self.mode = self.settings.get( 'mode' )
+        self.min_padding = len( str( self.settings.get( 'span' ) ) )
 
         # styles
         # use double curly braces ( {{ }} )for use in formatted string
         self.style = '''
             <style>
+                * {{
+                    font-family: {};
+                    padding-right: {};
+                }}
+
                 .curr_line {{
                     color: {};
                 }}
@@ -59,9 +49,11 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
                 }}
             </style>
         '''.format(
-                self.settings[ 'curr_line_color' ],
-                self.settings[ 'above_line_color' ],
-                self.settings[ 'below_line_color' ]
+                self.settings.get( 'font_face', view.settings().get( 'font_face' ) ),  # default to view's font face
+                self.settings.get( 'padding' ),
+                self.settings.get( 'curr_line_color' ),
+                self.settings.get( 'above_line_color' ),
+                self.settings.get( 'below_line_color' )
             )
 
         self.view.settings().add_on_change( self.command_mode, self.update_phantoms )
@@ -92,7 +84,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
             self.debounce.cancel()
 
         self.debounce = threading.Timer(
-            self.settings[ 'debounce_delay' ],
+            self.settings.get( 'debounce_delay' ),
             self.update_phantoms
         )
         
@@ -136,12 +128,14 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
 
         # calculate padding
         if self.mode == 'hybrid':
-            padding = max( len( str( self.curr_line ) ), self.min_padding )
+            line_no = self.curr_line + 1  # curr_line is zero indexed
+            line_len = len( str( line_no ) )
+            padding = max( line_len, self.min_padding )
 
         else:
             padding = self.min_padding
 
-        span = self.settings[ 'span' ]
+        span = self.settings.get( 'span' )
         rel_start = (
             -self.curr_line
             if span > self.curr_line else
@@ -167,7 +161,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
                 # show current line number
                 show_line = '{:{}>{}}'.format(
                     self.curr_line + 1,
-                    self.settings[ 'curr_line_marker' ],
+                    self.settings.get( 'curr_line_marker' ),
                     padding
                 )
 
@@ -177,7 +171,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
             else:
                 show_line = '{:{}>{}}'.format(
                     abs( rel_line ),
-                    self.settings[ 'rel_line_marker' ],
+                    self.settings.get( 'rel_line_marker' ),
                     padding
                 )
 
