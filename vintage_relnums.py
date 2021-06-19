@@ -54,7 +54,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
         '''.format(
                 self.settings.get( 'font_face', view.settings().get( 'font_face' ) ),  # default to view's font face
                 self.settings.get( 'padding' ),
-                self.settings.get( 'curr_line_color' ),
+                self.settings.get( 'current_line_color' ),
                 self.settings.get( 'above_line_color' ),
                 self.settings.get( 'below_line_color' )
             )
@@ -112,7 +112,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
     def update_lines( self ):
         native = (
             self.settings.get( 'native' ) and
-            ( int( sublime.version() ) >= 4000 )
+            self.view.settings().has( 'relative_line_numbers' )
         )
         
         if self.in_command_mode():
@@ -182,7 +182,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
                 # show current line number
                 show_line = '{:{}>{}}'.format(
                     self.curr_line + 1,
-                    self.settings.get( 'curr_line_marker' ),
+                    self.settings.get( 'current_line_marker' ),
                     padding
                 )
 
@@ -192,7 +192,7 @@ class VintageRelNums( sublime_plugin.ViewEventListener ):
             else:
                 show_line = '{:{}>{}}'.format(
                     abs( rel_line ),
-                    self.settings.get( 'rel_line_marker' ),
+                    self.settings.get( 'relative_line_marker' ),
                     padding
                 )
 

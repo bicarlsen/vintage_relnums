@@ -1,6 +1,6 @@
 {
     // Use native relatve line number instead of phantoms.
-    // For ST4 (build >4000) and up only.
+    // For builds with setting 'relative_line_numbers', only.
     "native": true,
 
     // Default mode to enter.
@@ -19,14 +19,14 @@
 
     // Text colors of the current line,
     // lines above, and lines below.
-    "curr_line_color":  "#90a959",
+    "current_line_color": "#90a959",
     "above_line_color": "#a63d40",
     "below_line_color": "#6494aa",
 
     // Markers for the current line,
     // and relative lines.
-    "curr_line_marker": "*",
-    "rel_line_marker":  ".",
+    "current_line_marker": "*",
+    "relative_line_marker": ".",
 
     // Amount of time to wait before updating
     // new numberings.
