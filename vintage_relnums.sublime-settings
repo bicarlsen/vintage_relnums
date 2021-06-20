@@ -1,10 +1,10 @@
 {
     // Use native relatve line number instead of phantoms.
     // For builds with setting 'relative_line_numbers', only.
-    "native": true,
+    "native": false,
 
     // Default mode to enter.
-    // Values are [ 'hybrid', 'relative' ]
+    // Values are [ 'hybrid', 'relative', 'absolute' ]
     "mode": "hybrid",
     
     // How many lines to calculate for relative numbering on each side
@@ -30,5 +30,5 @@
 
     // Amount of time to wait before updating
     // new numberings.
-    "debounce_delay": 0.4
+    "debounce_delay": 0.5
 }

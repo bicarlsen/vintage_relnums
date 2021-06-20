@@ -4,19 +4,41 @@ Relative numbering for Sublime's Vintage mode.
 ![Example](example.png)
 
 ## Install Instructions
+>  [Coming sooon to PackageControl.](https://github.com/wbond/package_control_channel/pull/8299)
 
 1. Navigate to Sublime's Packages directory. 
 
-This can be found by opening up Sublime's console (``Ctrl + ` (backtick)``, or `View > Show Console` ), and run `sublime.packages_path()`.
+ This can be found by opening up Sublime's console (``Ctrl + ` (backtick)``, or `View > Show Console` ), and run `sublime.packages_path()`.
 
 2. Place the `vintage_relnums` folder inside the Packages directory. 
 
-You can do this by cloning or downloading these files.
+ You can do this by cloning or downloading these files.
 For cloning, from the Packages directory run `git clone https://github.com/bicarlsen/vintage_relnums.git` in a console.
 
 3. Ensure that [Vintage mode](https://www.sublimetext.com/docs/3/vintage.html) is enabled for Sublime.
 
-Any time you enter `Command` or `Visual` mode relative numbers will be displayed.
+In `Command` or `Visual` mode you will have control over the line numbering style.
+
+## Commands
+
+Two commands are provided with the plugin.
+
+### Toggle Line Mode
+**Command:** `vrl_toggle_line_mode`
+
+**Default Key Map:** `ctrl+alt+l`
+
+Cycles through available line numbering modes.
+ + When using phantoms these modes are `hybrid`, `relative`, and `absolute`.
+ + When using native numbering the modes are `hybrid` and `absolute`.
+
+### Toggle Native
+**Command:** `vrl_toggle_native`
+
+**Default Key Map:** `ctrl+alt+n`
+
+Toggles between using phantoms and native line numbering.
+
 
 ## Helping Out
 

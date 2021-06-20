@@ -1,0 +1,10 @@
+[
+	{
+		"caption": "Vintage Relative Lines: Toggle Relative Lines",
+		"command": "vintage_toggle_relative_lines"
+	},
+	{
+		"caption": "Vintage Relative Lines: Toggle Native Lines",
+		"command": "vintage_toggle_native"
+	}
+]
