@@ -1,0 +1,14 @@
+# Diff tools
+
+*.png diff=exif
+
+
+# Used to remove files from deployment using `git archive`
+# and from GitHub release compressed files.
+
+# git files
+.gitattributes export-ignore
+.gitignore export-ignore
+
+# example files
+example.png export-ignore
