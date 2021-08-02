@@ -39,6 +39,21 @@ Cycles through available line numbering modes.
 
 Toggles between using phantoms and native line numbering.
 
+## Keybindings
+For quick switching between modes, one can place key bindings in the `Preferences > Key Bindings` file for the commands. For example
+
+```json
+[
+    { 
+        "keys": [ "ctrl+alt+l" ], 
+        "command": "vrl_toggle_line_mode"
+    },
+    {
+        "keys": [ "ctrl+alt+n" ],
+        "command": "vrl_toggle_native"
+    }
+]
+```
 
 ## Helping Out
 
