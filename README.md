@@ -26,7 +26,7 @@ Two commands are provided with the plugin.
 ### Toggle Line Mode
 **Command:** `vrl_toggle_line_mode`
 
-**Default Key Map:** `ctrl+alt+l`
+**Suggested Key Map:** `ctrl+alt+l`
 
 Cycles through available line numbering modes.
  + When using phantoms these modes are `hybrid`, `relative`, and `absolute`.
@@ -35,7 +35,7 @@ Cycles through available line numbering modes.
 ### Toggle Native
 **Command:** `vrl_toggle_native`
 
-**Default Key Map:** `ctrl+alt+n`
+**Suggested Key Map:** `ctrl+alt+n`
 
 Toggles between using phantoms and native line numbering.
 
