@@ -5,6 +5,10 @@ Relative numbering for Sublime's Vintage mode.
 
 ## Install Instructions
 
+Ensure that [Vintage mode](https://www.sublimetext.com/docs/3/vintage.html) is enabled for Sublime.
+
+In `Command` or `Visual` mode you will have control over the line numbering style.
+
 ### From Package Control (Recommended)
 
 1. Install [Package Control](https://packagecontrol.io/installation).
@@ -19,16 +23,14 @@ Relative numbering for Sublime's Vintage mode.
 
 1. Navigate to Sublime's Packages directory. 
 
- This can be found by opening up Sublime's console (``Ctrl + ` (backtick)``, or `View > Show Console` ), and run `sublime.packages_path()`.
+    This can be found by opening up Sublime's console (``Ctrl + ` (backtick)``, or `View > Show Console` ), and run `sublime.packages_path()`.
 
 2. Place the `vintage_relnums` folder inside the Packages directory. 
 
- You can do this by cloning or downloading these files.
-For cloning, from the Packages directory run `git clone https://github.com/bicarlsen/vintage_relnums.git` in a console.
+    You can do this by cloning or downloading these files.
+    For cloning, from the Packages directory run `git clone https://github.com/bicarlsen/vintage_relnums.git` in a console.
 
-3. Ensure that [Vintage mode](https://www.sublimetext.com/docs/3/vintage.html) is enabled for Sublime.
 
-In `Command` or `Visual` mode you will have control over the line numbering style.
 
 ## Commands
 
