@@ -4,7 +4,18 @@ Relative numbering for Sublime's Vintage mode.
 ![Example](example.png)
 
 ## Install Instructions
->  [Coming sooon to PackageControl.](https://github.com/wbond/package_control_channel/pull/8299)
+
+### From Package Control (Recommended)
+
+1. Install [Package Control](https://packagecontrol.io/installation).
+
+2. Run the “Package Control: Install Package” command.
+
+3. Find and install the "Vintage Relative Lines" plugin.
+
+4. Restart Sublime Text if there are issues.
+
+### Manually
 
 1. Navigate to Sublime's Packages directory. 
 
@@ -26,7 +37,7 @@ Two commands are provided with the plugin.
 ### Toggle Line Mode
 **Command:** `vrl_toggle_line_mode`
 
-**Suggested Key Map:** `ctrl+alt+l`
+**Suggested Key Map:** `ctrl + alt + l`
 
 Cycles through available line numbering modes.
  + When using phantoms these modes are `hybrid`, `relative`, and `absolute`.
@@ -35,7 +46,7 @@ Cycles through available line numbering modes.
 ### Toggle Native
 **Command:** `vrl_toggle_native`
 
-**Suggested Key Map:** `ctrl+alt+n`
+**Suggested Key Map:** `ctrl + alt + n`
 
 Toggles between using phantoms and native line numbering.
 
