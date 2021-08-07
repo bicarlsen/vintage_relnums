@@ -30,8 +30,6 @@ In `Command` or `Visual` mode you will have control over the line numbering styl
     You can do this by cloning or downloading these files.
     For cloning, from the Packages directory run `git clone https://github.com/bicarlsen/vintage_relnums.git` in a console.
 
-
-
 ## Commands
 
 Two commands are provided with the plugin.
@@ -42,15 +40,17 @@ Two commands are provided with the plugin.
 **Suggested Key Map:** `ctrl + alt + l`
 
 Cycles through available line numbering modes.
- + When using phantoms these modes are `hybrid`, `relative`, and `absolute`.
- + When using native numbering the modes are `hybrid` and `absolute`.
+
++ When using phantoms these modes are `hybrid`, `relative`, and `absolute`.
+
++ When using native numbering the modes are `hybrid` and `absolute`.
 
 ### Toggle Native
 **Command:** `vrl_toggle_native`
 
 **Suggested Key Map:** `ctrl + alt + n`
 
-Toggles between using phantoms and native line numbering.
+Toggles between using phantoms and native line numbering, if available.
 
 ## Keybindings
 For quick switching between modes, one can place key bindings in the `Preferences > Key Bindings` file for the commands. For example
