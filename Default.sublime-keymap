@@ -1,0 +1,10 @@
+[
+    { 
+        "keys": [ "ctrl+alt+l" ], 
+        "command": "vrl_toggle_line_mode"
+    },
+    {
+        "keys": [ "ctrl+alt+n" ],
+        "command": "vrl_toggle_native"
+    }
+]

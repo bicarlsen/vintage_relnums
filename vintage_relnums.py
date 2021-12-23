@@ -47,6 +47,15 @@ class VintageRelNums():
         self.command_mode = 'command_mode'  # vintage command mode
         
         self.view = view
+
+        # setup phantoms
+        self.phantom_set = sublime.PhantomSet( self.view, self.phantom_id )
+
+        # debounce
+        self.curr_line = None  # currently active line
+        self.debounce = None  # debounce timer, threading.Timer
+
+        # settings
         self.settings = (
             sublime.load_settings( self.settings_file )
             if settings is None else
@@ -59,13 +68,7 @@ class VintageRelNums():
         
         self.view.settings().add_on_change( self.command_mode, self.update_lines )
         
-        # setup phantoms
-        self.phantom_set = sublime.PhantomSet( self.view, self.phantom_id )
-
-        # debounce
-        self.curr_line = None  # currently active line
-        self.debounce = None  # debounce timer, threading.Timer
-
+        # must come last due to dependencies
         self.relative_line_numbers = self.settings.get( 'relative_line_numbers', False )
 
 
@@ -77,7 +80,10 @@ class VintageRelNums():
     @mode.setter
     def mode( self, mode ):
         # convert mode into a LineModes
-        if not isinstance( mode, LineModes ):
+        if mode is None:
+            mode = LineModes.hybrid
+
+        elif not isinstance( mode, LineModes ):
             mode = LineModes( mode )
 
         self.view.settings().set( self.view_mode_key, mode.value )

@@ -37,7 +37,7 @@ Two commands are provided with the plugin.
 ### Toggle Line Mode
 **Command:** `vrl_toggle_line_mode`
 
-**Suggested Key Map:** `ctrl + alt + l`
+**Default Key Map:** `ctrl + alt + l`
 
 Cycles through available line numbering modes.
 
@@ -48,25 +48,16 @@ Cycles through available line numbering modes.
 ### Toggle Native
 **Command:** `vrl_toggle_native`
 
-**Suggested Key Map:** `ctrl + alt + n`
+**Default Key Map:** `ctrl + alt + n`
 
 Toggles between using phantoms and native line numbering, if available.
 
-## Keybindings
-For quick switching between modes, one can place key bindings in the `Preferences > Key Bindings` file for the commands. For example
+## Settings
+Change settings for the plugin by opening the `Preferences > Package Settings > Vintage Relative Lines` menu, and clicking on `Settings - User`. This opens up the user settings file. By clicking on `Settings - Default` the default settings file is opened, and all the settings with an explanation are provided.
 
-```json
-[
-    { 
-        "keys": [ "ctrl+alt+l" ], 
-        "command": "vrl_toggle_line_mode"
-    },
-    {
-        "keys": [ "ctrl+alt+n" ],
-        "command": "vrl_toggle_native"
-    }
-]
-```
+
+## Keybindings
+The default key bindings for the package's commands are given in the [**Commands** section](#commands). These bindings can be modified by openeing the `Preferences > Package Settings > Vintage Relative Lines` menu and clicking on `Key Bindings – Default`. One can add to the deafult key bindings in the `Key Bindings – User` file, which is also accesible via `Preferences > Key Bindings`.
 
 ## Helping Out
 
