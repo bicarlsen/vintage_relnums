@@ -66,6 +66,10 @@ class VintageRelNums():
             # initilize view mode if needed
             self.mode = self.settings.get( 'mode' )
         
+        if not self.view.settings().has( self.view_native_key ):
+            # initilize native if needed
+            self.native = self.settings.get( 'native' )
+
         self.view.settings().add_on_change( self.command_mode, self.update_lines )
         
         # must come last due to dependencies

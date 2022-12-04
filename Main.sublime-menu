@@ -30,7 +30,7 @@
 						"children": [
 							{
 								"command": "open_file",
-								"args": { "file": "${packages}/vintage_relnums/Preferences.sublime-settings" },
+								"args": { "file": "${packages}/vintage_relnums/vintage_relnums.sublime-settings" },
 								"caption": "Settings – Default"
 							},
 							{
